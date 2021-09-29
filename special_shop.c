@@ -2,29 +2,46 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdint.h>
+#include <math.h>
 
 // type large enough to hold all potential input/output values, as well as intermediate calculations
 typedef int64_t working_type;
 
 #define WORKING_MAX INT64_MAX
 
-static working_type pot_price(working_type count, working_type multiplier) {
-    return multiplier * count * count;
+static double solve_parabola(double x_coord, double a, double b, double c) {
+    const double a_term = a * x_coord * x_coord;
+    const double b_term = b * x_coord;
+    return a_term + b_term + c;
 }
 
-static working_type solve_case(working_type num_pots, working_type x_cost, working_type y_cost) {
-    working_type final_cost = WORKING_MAX;
-    for(working_type i = 0; i <= num_pots; ++i) {
-        const working_type x_price = pot_price(i, x_cost);
-        const working_type y_price = pot_price(num_pots - i, y_cost);
+/*
+Actual solution: 
+Q = (A + B)X^2 - 2BNX + B*N^2
+a = A + B
+b = -2 * B * N
+c = B
 
-        const working_type current_price = y_price + x_price;
-        if (current_price < final_cost) {
-            final_cost = current_price;
-        }
-    }
+min x value (real) = -b / 2a
+= -2BN / 2(A + B)
+= -BN / (A + B)
 
-    return final_cost;
+Solve for q
+Round to nearest int
+*/
+
+static working_type solve_case(working_type num_pots, working_type x_mult,
+                               working_type y_mult) 
+{
+    const double quad_a = x_mult + y_mult;
+    const double quad_b = -2 * y_mult * num_pots;
+    const double quad_c = y_mult * num_pots * num_pots;
+    const double parabola_min_x_coord = -quad_b / (2 * quad_a);
+    const double parabola_min_y_coord = 
+        solve_parabola(parabola_min_x_coord, quad_a, quad_b, quad_c);
+
+    const working_type num_x_pots = (working_type)round(parabola_min_y_coord);
+    return num_x_pots;
 }
 
 static void read_test_case() {
@@ -75,6 +92,7 @@ X + Y = N
 X + Y = 5
 X = 5 - Y
 
+// wrong
 (A * X^2) + (B * Y^2) = Q
 (1 * (5 - Y)^2) + (2 * Y^2) = Q
 (5 - Y)^2 + 2 Y^2 = Q
@@ -90,17 +108,46 @@ min = 25 - 6.25
 min = 18.75
 min ~ 19
 
-4Y^2 - 10Y + 25 = Q
-4(19)^2 - 190 + 25 = Q
-1444 - 165 = Q
-1444 - 165 = Q
-1279 = Q
+// right (Wolfram alpha)
+3Y^2 - 10Y + 25 = Q
 
+min x = -b / 2a
+min x = -(-10) / 2(3)
+min x = 10 / 6
+min x = 5 / 3
+
+f(5/3) = 3(5/3)^2 - 10(5/3) + 25 
+3(25/9) - 50/3 + 25 = Q
+25/3 - 50/3 + 25 = Q
+-25/3 + 25 = Q
+-25/3 + #(25)/3 = Q
+(50/3) = Q
+Q ~ 17
 
 X >= 0
 Y >= 0
 X + Y = N
 
 Minimize (A * X^2) + (B + Y^2)
+
+
+Actual solution: 
+We're given (A * X^2) + (B * Y^2) = Q, where Q is the cost
+We also kow the Y = N - X
+Q = (A * X^2) + (B * Y^2)
+Q = (A * X^2) + (B * (N - X)^2)
+Q = (A * X^2) + (B * (N^2 - 2NX + X^2))
+Q = (A * X^2) + B*N^2 - 2BNX + BX^2
+Q = (A + B)X^2 - 2BNX + B*N^2
+a = A + B
+b = 2 * B * N
+c = B *N^2
+
+min x value (real) = -b / 2a
+= -2BN / 2(A + B)
+= -BN / (A + B)
+
+Solve for q
+Round to nearest int
 
 */
