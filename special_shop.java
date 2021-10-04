@@ -22,7 +22,9 @@ class TestClass {
             final BigInteger denominator = coeffA.multiply(BigInteger.valueOf(2));
             final BigDecimal realNumerator = new BigDecimal(numerator);
             final BigDecimal realDenominator = new BigDecimal(denominator);
-            return realNumerator.divide(realDenominator).round(roundingMode);
+            final BigDecimal realResult = 
+                realNumerator.divide(realDenominator, roundingMode.getRoundingMode());
+            return realResult.round(roundingMode);
         }
 
         public BigDecimal calcAt(BigDecimal xCoord) {
@@ -66,5 +68,7 @@ class TestClass {
         for(int i = 0; i < numLines; ++i) {
             parseTestCase(br.readLine(), out);
         }
+
+        out.flush();
     }
 }
