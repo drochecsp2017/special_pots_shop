@@ -1,6 +1,4 @@
 
-# TODO test
-
 class quadratic_eq:
     def __init__(self, num_pots: int, x_mult: int, y_mult: int) -> None:
         self.a_ = float(x_mult) + float(y_mult)
