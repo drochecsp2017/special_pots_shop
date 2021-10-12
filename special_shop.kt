@@ -1,5 +1,5 @@
 
-import kotlin.io.readline;
+//import kotlin.io.readline;
 import java.math.BigInteger;
 import java.math.BigDecimal;
 import java.math.MathContext;
@@ -7,13 +7,13 @@ import java.math.MathContext;
 
 class Parabola(potCount: BigInteger, xMult: BigInteger, yMult: BigInteger) {
     private val coeffA = xMult + yMult;
-    private val coeffB = -2 * yMult * potCount;
+    private val coeffB = BigInteger.valueOf(-2) * yMult * potCount;
     private val coeffC = potCount.pow(2) * yMult;
     private val roundingMode = MathContext(0);
 
     fun minXCoord(): BigDecimal {
         val numerator = BigDecimal(-coeffB);
-        val denominator = BigDecimal(coeffA * 2);
+        val denominator = BigDecimal(coeffA * BigInteger.valueOf(2));
         val result = numerator.divide(denominator, roundingMode.getRoundingMode());
         return result.round(roundingMode);
     }
@@ -29,7 +29,10 @@ class Parabola(potCount: BigInteger, xMult: BigInteger, yMult: BigInteger) {
 
 
 fun solveCase(potCount: BigInteger, xMult: BigInteger, yMult: BigInteger): BigInteger {
-    
+    val eq = Parabola(potCount, xMult, yMult);
+    val optimal_a_pots = eq.minXCoord();
+    val soln = eq.solveAt(optimal_a_pots);
+    return soln.toBigInteger();
 }
 
 fun parseTestCase(): Unit {
