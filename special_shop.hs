@@ -1,6 +1,8 @@
 
 module Main where
 
+import System.Console.Haskeline.IO ()
+
 data Equation = Parabola Float Float Float 
 
 calcEquation :: Float -> Float -> Float -> Equation
@@ -47,7 +49,7 @@ parseNumTests = do
 
 parseTestCase :: IO (Int, Int, Int)
 parseTestCase = do
-    line <- getLine
+    line <- getLine 
     let numPots = (read (takeWhile (/= ' ') line) :: Int)
     let aMult = (read (drop 1 (dropWhile (/= ' ') line)) :: Int)
     let bMult = (read (drop 2 (dropWhile (/= ' ') line)) :: Int)
