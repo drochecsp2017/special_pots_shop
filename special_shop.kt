@@ -1,6 +1,5 @@
 
-
-
+import kotlin.math.round;
 
 class Parabola(potCount: Long, xMult: Long, yMult: Long) {
     private val coeffA = xMult + yMult;
@@ -10,14 +9,14 @@ class Parabola(potCount: Long, xMult: Long, yMult: Long) {
     fun minXCoord(): Long {
         val numerator = -1.0 * coeffB;
         val denominator = coeffA * 2.0;
-        val result = numerator / denominator;
+        val result = round(numerator / denominator);
         return result.toLong();
     }
 
     fun solveAt(xCoord: Double): Long {
         val termA = xCoord * xCoord * coeffA;
         val termB = xCoord * coeffB;
-        val termC = coeffC.doubleValue();
+        val termC = coeffC.toDouble();
         val realResult = termA + termB + termC;
         return realResult.toLong();
     }
@@ -26,9 +25,9 @@ class Parabola(potCount: Long, xMult: Long, yMult: Long) {
 
 fun solveCase(potCount: Long, xMult: Long, yMult: Long): Long {
     val eq = Parabola(potCount, xMult, yMult);
-    val optimal_a_pots = eq.minXCoord();
-    val soln = eq.solveAt(optimal_a_pots);
-    return soln.toBigInteger();
+    val optimal_a_pots: Long = eq.minXCoord();
+    val soln: Long = eq.solveAt(optimal_a_pots.toDouble());
+    return soln;
 }
 
 fun parseTestCase(): Unit {
