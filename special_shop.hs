@@ -47,16 +47,21 @@ parseNumTests = do
     let numTests = read line :: Int
     return numTests
 
+readInts :: IO [Int]
+readInts = fmap (map read . words) getLine
+
 parseTestCase :: IO (Int, Int, Int)
 parseTestCase = do
-    line <- getLine 
-    let numPots = (read (takeWhile (/= ' ') line) :: Int)
-    let aMult = (read (drop 1 (dropWhile (/= ' ') line)) :: Int)
-    let bMult = (read (drop 2 (dropWhile (/= ' ') line)) :: Int)
+    input <- readInts
+    let numPots = head input
+    let aMult = input !! 1
+    let bMult = input !! 2
     return (numPots, aMult, bMult)
 
 main :: IO ()
 main = do
+    print "hi"
     numTests <- parseNumTests
+    print numTests
     let inputs = replicate numTests parseTestCase
     runTests inputs

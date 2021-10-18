@@ -3,3 +3,5 @@ ss_c.exe
 *.pdb
 *.out
 output.txt
+*.hi
+*.o
