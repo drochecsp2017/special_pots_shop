@@ -1,11 +1,11 @@
 
 module Main where
 
-import System.Console.Haskeline.IO ()
 
-data Equation = Parabola Float Float Float 
+data Equation = Parabola Double Double Double 
 
-calcEquation :: Float -> Float -> Float -> Equation
+
+calcEquation :: Double -> Double -> Double -> Equation
 calcEquation n a b = 
     let factA = a + b
         factB = -2.0 * b * n
@@ -15,25 +15,24 @@ calcEquation n a b =
 findEqMin :: Equation -> Integer  
 findEqMin (Parabola a b _) = 
     let result = -1.0 * b / (2 * a)
-    in round result 
+    in round result
 
-solveEqAt :: Equation -> Float -> Integer
+solveEqAt :: Equation -> Double -> Integer
 solveEqAt (Parabola a b c) xCoord = 
     let factA = a * xCoord * xCoord
         factB = b * xCoord
         factC = c
     in round (factA + factB + factC)
 
-solveTestCase :: Int -> Int -> Int -> Integer
+solveTestCase :: Integer -> Integer -> Integer -> Integer
 solveTestCase numPots aMult bMult =
-    let fN = (fromIntegral numPots :: Float)
-        fA = (fromIntegral aMult :: Float)
-        fB = (fromIntegral bMult :: Float)
+    let fN = (fromIntegral numPots :: Double)
+        fA = (fromIntegral aMult :: Double)
+        fB = (fromIntegral bMult :: Double)
         eq = calcEquation fN fA fB
-    in solveEqAt eq (fromIntegral (findEqMin eq) :: Float)
+    in solveEqAt eq (fromIntegral (findEqMin eq) :: Double)
 
-
-runTests :: [IO (Int, Int, Int)] -> IO()
+runTests :: [IO (Integer, Integer, Integer)] -> IO()
 runTests (first:rest) = do
     (n, a, b) <- first
     let soln = solveTestCase n a b
@@ -47,10 +46,10 @@ parseNumTests = do
     let numTests = read line :: Int
     return numTests
 
-readInts :: IO [Int]
+readInts :: IO [Integer]
 readInts = fmap (map read . words) getLine
 
-parseTestCase :: IO (Int, Int, Int)
+parseTestCase :: IO (Integer, Integer, Integer)
 parseTestCase = do
     input <- readInts
     let numPots = head input
@@ -60,8 +59,6 @@ parseTestCase = do
 
 main :: IO ()
 main = do
-    print "hi"
     numTests <- parseNumTests
-    print numTests
     let inputs = replicate numTests parseTestCase
     runTests inputs
