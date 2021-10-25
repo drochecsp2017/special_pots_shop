@@ -20,7 +20,7 @@ impl Equation {
         let b_mult = args.2 as Float;
         return Equation {
             coeff_a: a_mult + b_mult,
-            coeff_b: -2.0 * (b_mult * num_pots),
+            coeff_b: -2.0 * b_mult * num_pots,
             coeff_c: b_mult * num_pots.powi(2),
         };
     }
@@ -33,7 +33,7 @@ impl Equation {
     }
 
     fn solve_at(&self, x: Float) -> Float {
-        let term_a = self.coeff_a.powi(2) * x;
+        let term_a = self.coeff_a * x.powi(2);
         let term_b = self.coeff_b * x;
         let term_c = self.coeff_c;
         return term_a + term_b + term_c;
@@ -43,8 +43,13 @@ impl Equation {
 
 fn solve_case(args: Input) -> Integer {
     let eq = Equation::calc_equation(args);
+    //eprint!("coeff_a: {}; ", eq.coeff_a);
+    //eprint!("coeff_b: {}; ", eq.coeff_b);
+    //eprintln!("coeff_c: {}; ", eq.coeff_c);
     let min = eq.find_eq_min();
+    //eprint!("min: {} (rounded: {}); ", min, min.round());
     let soln = eq.solve_at(min.round());
+    //eprintln!("soln: {}; ", soln);
     return soln.round() as Integer;
 }
 
@@ -57,6 +62,9 @@ fn parse_case(buffer: &mut String) -> Option<Input> {
             let num_pots = vec[0].parse::<Integer>().unwrap();
             let a_mult = vec[1].parse::<Integer>().unwrap();
             let b_mult = vec[2].parse::<Integer>().unwrap();
+            //eprint!("num_pots: {}; ", num_pots);
+            //eprint!("a_mult: {}; ", a_mult);
+            //eprintln!("b_mult: {}; ", b_mult);
             return Some((num_pots, a_mult, b_mult))
         }
 
