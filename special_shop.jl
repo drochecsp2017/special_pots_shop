@@ -26,11 +26,11 @@ function solve_equation_at(eq :: Equation, coord :: Float64)
     return aTerm + bTerm + cTerm
 end
 
-function solve_case(numPots, aMult, bMult) 
+function solve_case(numPots, aMult, bMult) :: Int64
     eq = Equation(numPots, aMult, bMult);
-    eq_min = find_equation_min(eq)
-    soln = solve_equation_at(eq, round(eq_min))
-    return round(soln)
+    eq_min = find_equation_min(eq);
+    soln = solve_equation_at(eq, round(eq_min));
+    return round(soln);
 end
 
 function run_case() 
