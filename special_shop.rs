@@ -43,13 +43,8 @@ impl Equation {
 
 fn solve_case(args: Input) -> Integer {
     let eq = Equation::calc_equation(args);
-    //eprint!("coeff_a: {}; ", eq.coeff_a);
-    //eprint!("coeff_b: {}; ", eq.coeff_b);
-    //eprintln!("coeff_c: {}; ", eq.coeff_c);
     let min = eq.find_eq_min();
-    //eprint!("min: {} (rounded: {}); ", min, min.round());
     let soln = eq.solve_at(min.round());
-    //eprintln!("soln: {}; ", soln);
     return soln.round() as Integer;
 }
 
@@ -62,9 +57,6 @@ fn parse_case(buffer: &mut String) -> Option<Input> {
             let num_pots = vec[0].parse::<Integer>().unwrap();
             let a_mult = vec[1].parse::<Integer>().unwrap();
             let b_mult = vec[2].parse::<Integer>().unwrap();
-            //eprint!("num_pots: {}; ", num_pots);
-            //eprint!("a_mult: {}; ", a_mult);
-            //eprintln!("b_mult: {}; ", b_mult);
             return Some((num_pots, a_mult, b_mult))
         }
 
